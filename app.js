@@ -14,7 +14,7 @@ import { orderRouter } from "./Routes/orderRouter.js";
 
 export const app = express();
 
-config({ path: "./config.env" });
+config({ path: "./config/config.env" });
 
 app.use(
   cors({
