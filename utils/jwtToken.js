@@ -12,7 +12,8 @@ export const sendToken = (user, statusCode, message, res) => {
     // set cookie
     res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === "production" | true,
+        sameSite: "None",
     });
 
     // send response

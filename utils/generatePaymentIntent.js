@@ -1,5 +1,8 @@
 import { database } from "../database/db.js";
 import Stripe from "stripe";
+import {config} from "dotenv";
+
+config();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 

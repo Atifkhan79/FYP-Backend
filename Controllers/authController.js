@@ -104,6 +104,8 @@ export const logOut  = AsyncHandler(async (req,res,next) => {
     res.status(200).cookie("token","",{
         expires : new Date(Date.now()),
         httpOnly : true,
+        secure: process.env.NODE_ENV === "production" | true,
+        sameSite: "None",
     }).json({
         success : true,
         message : "Logged out Ssuccessfully"
