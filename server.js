@@ -1,14 +1,20 @@
 import { app } from "./app.js";
 import {v2 as cloudinary} from 'cloudinary'
+import { config } from "dotenv";
+
+config();
 
 cloudinary.config({
-  cloud_name: "dlerqh6wh",
-  api_key:"414781631326826",
-  api_secret:"piyLQlu5Xi4_ZfC_bzqTRqnHf4E"
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-
-app.listen(process.env.PORT,()=>{
+// Only listen locally, not on Vercel
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(process.env.PORT, () => {
     console.log(`Server is Running on port: ${process.env.PORT}`);
-    
-})
+  });
+}
+
+export default app;  // ← Vercel needs this
