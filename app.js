@@ -100,6 +100,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// ✅ Root route — fixes "Cannot GET /"
+app.get("/", (req, res) => {
+  res.json({ message: "API is running ✅" });
+});
+
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/admin", adminRouter);
