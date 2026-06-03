@@ -16,17 +16,16 @@ config();
 
 export const app = express();
 
-
 // ✅ CORS must be FIRST before everything
 const allowedOrigins = [
-  "https://finalyearprojectecommercrai.netlify.app",
+  "https://finalyearprojectecommercrai.netlify.app",  // ← also removed trailing slash
   "https://dashboardaiecommerce.netlify.app",
   "http://localhost:5173",
   "http://localhost:5174",
-  "http://localhost:4000",
+  "http://localhost:4000",  // ← ADD THIS
 ];
 
-const corsOptions = {
+app.options("*", cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -35,12 +34,11 @@ const corsOptions = {
     }
   },
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
-};
+}));
 
-app.use(cors(corsOptions));        // ← handles all requests
-app.options("*", cors(corsOptions)); // ← handles preflight with same config
+// ✅ Handle preflight requests
+app.options("*", cors());
 
 app.use(fileUpload({
   useTempFiles: true,
