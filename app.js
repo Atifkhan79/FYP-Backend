@@ -17,28 +17,15 @@ config();
 export const app = express();
 
 // ✅ CORS must be FIRST before everything
-const allowedOrigins = [
-  "https://finalyearprojectecommercrai.netlify.app/",
-  "https://dashboardaiecommerce.netlify.app",
-  "http://localhost:5173",
-  "http://localhost:5174",
-];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
-}));
 
-// ✅ Handle preflight requests
-app.options("*", cors());
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_URL, process.env.DASHBOARD_URL],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  }),
+);
 
 app.use(fileUpload({
   useTempFiles: true,
