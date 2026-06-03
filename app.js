@@ -18,14 +18,13 @@ export const app = express();
 
 // ✅ CORS must be FIRST before everything
 const allowedOrigins = [
-  "https://finalyearprojectecommercrai.netlify.app",  // ← also removed trailing slash
+  "https://finalyearprojectecommercrai.netlify.app/",
   "https://dashboardaiecommerce.netlify.app",
   "http://localhost:5173",
   "http://localhost:5174",
-  "http://localhost:4000",  // ← ADD THIS
 ];
 
-app.options("*", cors({
+app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -33,6 +32,7 @@ app.options("*", cors({
       callback(new Error("Not allowed by CORS"));
     }
   },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
 }));
