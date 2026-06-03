@@ -25,6 +25,7 @@ app.use(
       const allowed = [
         process.env.FRONTEND_URL,
         process.env.DASHBOARD_URL,
+        "http://localhost:5173"
       ];
       if (!origin || allowed.includes(origin)) {
         callback(null, true);
