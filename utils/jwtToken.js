@@ -1,27 +1,24 @@
 import jwt from 'jsonwebtoken'
 
-
 export const sendToken = (user, statusCode, message, res) => {
-    // create JWT payload with user id
     const token = jwt.sign(
-        { id: user.id },        // 🔥 IMPORTANT: must include id
+        { id: user.id },
         process.env.JWT_SECRET_KEY,
         { expiresIn: "7d" }
     );
 
-    // set cookie
     res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production" | true,
-        sameSite: "None",
+        secure: true,        // ✅ fixed: removed "| true" bug
+        sameSite: "None",    // ✅ required for cross-site (Netlify ↔ Vercel)
+        maxAge: 7 * 24 * 60 * 60 * 1000,  // ✅ added: 7 days expiry
     });
 
-    // send response
-    const { password, ...userWithoutPassword } = user; // remove password
+    const { password, ...userWithoutPassword } = user;
     res.status(statusCode).json({
         success: true,
         message,
         user: userWithoutPassword,
-        token,
+        token,  // ✅ already sending token in body — good!
     });
 };
